@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-// TODO@TypeScript: Force TypeScript to generate AMD module
-export var _ = 0;
+declare var require:<T>(moduleId:[string], callback:(module:T)=>void, error:(err:any)=>void)=>void;
 
-declare var require:<T>(moduleId:[string], callback:(module:T)=>void)=>void;
+// Allow for running under nodejs/requirejs in tests
+var _monaco: typeof monaco = (typeof monaco === 'undefined' ? (<any>self).monaco : monaco);
 
 interface ILang extends monaco.languages.ILanguageExtensionPoint {
 	module: string;
@@ -18,14 +18,26 @@ interface ILangImpl {
 	language: monaco.languages.IMonarchLanguage;
 }
 
+let languageDefinitions:{[languageId:string]:ILang} = {};
+
+export function loadLanguage(languageId:string): monaco.Promise<void> {
+	let module = languageDefinitions[languageId].module;
+	return new _monaco.Promise<void>((c, e, p) => {
+		require<ILangImpl>([module], (mod) => {
+			_monaco.languages.setMonarchTokensProvider(languageId, mod.language);
+			_monaco.languages.setLanguageConfiguration(languageId, mod.conf);
+			c(void 0);
+		}, e);
+	});
+}
+
 function registerLanguage(def:ILang): void {
-	let module = def.module;
-	monaco.languages.register(def);
-	monaco.languages.onLanguage(def.id, () => {
-		require<ILangImpl>([def.module], (mod) => {
-			monaco.languages.setMonarchTokensProvider(def.id, mod.language);
-			monaco.languages.setLanguageConfiguration(def.id, mod.conf);
-		});
+	let languageId = def.id;
+
+	languageDefinitions[languageId] = def;
+	_monaco.languages.register(def);
+	_monaco.languages.onLanguage(languageId, () => {
+		loadLanguage(languageId);
 	});
 }
 

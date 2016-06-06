@@ -12,7 +12,10 @@
   "files": [
     "src/bat.ts",
     "src/monaco.contribution.ts",
-    "test/test.ts",
+    "test/assert.d.ts",
+    "test/bat.test.ts",
+    "test/mocha.d.ts",
+    "test/testRunner.ts",
     "node_modules/monaco-editor-core/monaco.d.ts"
   ]
 }
