@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "outDir": "out",
+    "target": "es5"
+  },
+  "filesGlob": [
+    "src/*.ts",
+    "test/*.ts",
+    "node_modules/monaco-editor-core/monaco.d.ts"
+  ],
+  "files": [
+    "src/bat.ts",
+    "src/monaco.contribution.ts",
+    "test/test.ts",
+    "node_modules/monaco-editor-core/monaco.d.ts"
+  ]
+}
