@@ -25,16 +25,16 @@ export function testTokenization(languageId:string, tests:ITestItem[][]): void {
 			loadLanguage(languageId).then(() => {
 				runTests(languageId, tests);
 				done();
-			}, done);
+			}).then(null, done);
 		});
 	});
 }
 
-function runTests(languageId:string, tests:ITestItem[][]): void {//} monaco.Promise<void> {
+function runTests(languageId:string, tests:ITestItem[][]): void {
 	tests.forEach((test) => runTest(languageId, test));
 }
 
-function runTest(languageId:string, test:ITestItem[]): void {//} monaco.Promise<void> {
+function runTest(languageId:string, test:ITestItem[]): void {
 	let text = test.map(t => t.line).join('\n');
 	let model = _monaco.editor.createModel(text, languageId);
 
@@ -49,7 +49,9 @@ function runTest(languageId:string, test:ITestItem[]): void {//} monaco.Promise<
 		}
 
 		let expected = test[lineNumber - 1].tokens;
-		assert.deepEqual(actual, expected);
+		// console.log(`actual: ${JSON.stringify(actual)}`);
+		// console.log(`expected: ${JSON.stringify(expected)}`);
+		assert.deepEqual(actual, expected, 'TOKENIZING ' + text);
 	}
 
 	model.dispose();
