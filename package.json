@@ -5,7 +5,9 @@
   "scripts": {
     "test": "node_modules/.bin/mocha",
     "watch": "node_modules/.bin/gulp watch",
-    "prepublish": "node_modules/.bin/gulp release"
+    "prepublish": "node_modules/.bin/gulp release",
+    "start": "gulp compile && gulp release && node_modules/.bin/http-server -c-1 ./ -p 8888 -o",
+    "server": "node_modules/.bin/http-server -c-1 ./ -p 8888 -o"
   },
   "author": "Microsoft Corporation",
   "license": "MIT",
@@ -22,5 +24,10 @@
     "rimraf": "^2.5.2",
     "typescript": "^1.8.10",
     "typescript-with-globs": "^0.1.4"
+  },
+  "dependencies": {
+    "http-server": "^0.9.0",
+    "monaco-editor": "^0.2.4",
+    "monaco-editor-core": "^0.3.0"
   }
 }

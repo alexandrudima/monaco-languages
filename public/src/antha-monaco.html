@@ -1,0 +1,42 @@
+<script src="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/polymer/polymer.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-list/iron-list.html">
+
+<link rel="import" href="/public/src/antha-editor.html">
+<link rel="import" href="/public/src/antha-files.html">
+
+<dom-module id="antha-monaco">
+  <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
+    .section {
+      margin: 30px;
+    }
+  </style>
+  <template>
+          <antha-editor file-selected="{{fileSelected}}" class="flex-3 layout vertical section"></antha-editor>
+          <antha-files file-selected="{{fileSelected}}" class="flex layout vertical section"></antha-example-files>
+    </template>
+  <script>
+    HTMLImports.whenReady(() => {
+      Polymer({
+        is: 'antha-monaco',
+        properties: {
+          fileSelected: {
+            type: Object,
+            value: () => {
+              return {
+                name: '',
+                content: ''
+              };
+            },
+            notify: true,
+            observer: '_watchFile'
+          }
+        },
+        _watchFile: function(fileSelected) {
+        }
+      });
+    });
+  </script>
+</dom-module>

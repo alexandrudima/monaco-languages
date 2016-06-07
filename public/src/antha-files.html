@@ -1,0 +1,61 @@
+<script src="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/polymer/polymer.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-list/iron-list.html">
+
+<dom-module id="antha-files">
+  <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
+    .section {
+      margin: 30px;
+    }
+  </style>
+  <template>
+      <iron-list items="[[files]]" as="file">
+        <template>
+          <div class="file">
+            <b>#[[index]] - [[file.name]]</b>
+            <p>[[_fileSummary(file.content)]]</p>
+          </div>
+        </template>
+  </iron-list>
+  </template>
+  <script>
+    HTMLImports.whenReady(() => {
+      Polymer({
+        is: 'antha-files',
+        properties: {
+          files: {
+            type: Array,
+            value: () => {
+              return [];
+            }
+          },
+          fileSelected: {
+            type: Object,
+            notify: true
+          }
+        },
+        _fileSummary: function(content) {
+          if (content) {
+            return content.substr(0, 100);
+          }
+        },
+        ready: function() {
+          // Make into an Array then do Promise.all(...)
+          var filesToFetch = ['/public/examples/typeiisconstructassembly_sim.an'];
+          var fileToFetch = filesToFetch[0];
+            fetch(fileToFetch).then((res) => {
+              return res.text();
+            }).then((file) => {
+              // harcoding for now - use the index to determine name of the file
+              this.set('fileSelected.name', 'examples/typeiisconstructassembly_sim.an');
+              this.set('fileSelected.content', file);
+
+              this.push('files', this.fileSelected);
+            });
+        }
+      });
+    });
+  </script>
+</dom-module>
