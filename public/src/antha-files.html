@@ -6,19 +6,21 @@
 
 <dom-module id="antha-files">
   <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
-    .section {
-      margin: 30px;
+    :host {
+      @apply(--layout-vertical);
+      @apply(--layout-flex);
+      @apply(--section);
     }
   </style>
   <template>
-      <iron-list items="[[files]]" as="file">
-        <template>
-          <div class="file">
-            <b>#[[index]] - [[file.name]]</b>
-            <p>[[_fileSummary(file.content)]]</p>
-          </div>
-        </template>
-  </iron-list>
+    <iron-list items="[[files]]" as="file">
+      <template>
+        <div class="file">
+          <b>#[[index]] - [[file.name]]</b>
+          <p>[[_fileSummary(file.content)]]</p>
+        </div>
+      </template>
+    </iron-list>
   </template>
   <script>
     HTMLImports.whenReady(() => {

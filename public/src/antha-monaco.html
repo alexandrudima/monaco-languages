@@ -9,14 +9,16 @@
 
 <dom-module id="antha-monaco">
   <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
-    .section {
-      margin: 30px;
+    :host {
+      @apply(--layout-horizontal);
+      @apply(--layout-flex);
+      @apply(--section);
     }
   </style>
   <template>
-          <antha-editor file-selected="{{fileSelected}}" class="flex-3 layout vertical section"></antha-editor>
-          <antha-files file-selected="{{fileSelected}}" class="flex layout vertical section"></antha-example-files>
-    </template>
+    <antha-editor file-selected="{{fileSelected}}"></antha-editor>
+    <antha-files file-selected="{{fileSelected}}"></antha-example-files>
+  </template>
   <script>
     HTMLImports.whenReady(() => {
       Polymer({
@@ -35,6 +37,7 @@
           }
         },
         _watchFile: function(fileSelected) {
+
         }
       });
     });

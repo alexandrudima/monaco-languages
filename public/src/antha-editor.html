@@ -6,14 +6,25 @@
 
 <dom-module id="antha-editor">
   <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
-    .section {
-      margin: 30px;
+    :host {
+      @apply(--layout-vertical);
+      @apply(--layout-flex-3);
+      @apply(--section);
+    }
+
+    #monaco_editor {
+      @apply(--layout-flex);
     }
   </style>
   <template>
-        <h5>[[fileSelected.name]]</h5>
-        <div id="monaco_editor" class="flex"></div>
-    </template>
+    <h5>[[fileSelected.name]]</h5>
+    <!--
+          TODO: Display three editors side-by-side.
+          One for the protocol, paramters and workflow.
+          -->
+    <div id="monaco_editor">
+    </div>
+  </template>
   <!--
       move this to somewhere closer to the actual loading of the editor,
       i.e., in antha-editor possibly.
