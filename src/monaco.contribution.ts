@@ -25,7 +25,9 @@ export function loadLanguage(languageId:string): monaco.Promise<void> {
 	return new _monaco.Promise<void>((c, e, p) => {
 		require<ILangImpl>([module], (mod) => {
 			_monaco.languages.setMonarchTokensProvider(languageId, mod.language);
+			//_monaco.languages.setTokensProvider(languageId, mod.language);
 			_monaco.languages.setLanguageConfiguration(languageId, mod.conf);
+			//_monaco.languages.setLanguageConfiguration(languageId, mod.conf);
 			c(void 0);
 		}, e);
 	});
@@ -41,6 +43,26 @@ function registerLanguage(def:ILang): void {
 	});
 }
 
+/*---------------------------------------------------------------------------------------------
+ * Antha
+ *--------------------------------------------------------------------------------------------*/
+
+/** Core language */
+registerLanguage({
+	id: 'antha',
+	extensions: [ '.an', '.antha'],
+	aliases: [ 'Antha', 'antha' ],
+	firstLine: '^protocol',
+	mimetypes: ['text/antha', 'text/an'],
+	module: './antha'
+});
+
+/** Parameters? */
+
+/** Workflow? */
+
+
+/*--------------------------------------------------------------------------------------------*/
 
 registerLanguage({
 	id: 'bat',

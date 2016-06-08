@@ -1,0 +1,50 @@
+<script src="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/polymer/polymer.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-list/iron-list.html">
+
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/color.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/typography.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/shadow.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/default-theme.html">
+
+<link rel="import" href="/public/src/antha-editor.html">
+<link rel="import" href="/public/src/antha-files.html">
+
+<dom-module id="antha-monaco">
+  <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
+    :host {
+      @apply(--layout-horizontal);
+      @apply(--layout-flex);
+      /*@apply(--section);*/
+    }
+  </style>
+  <template>
+    <antha-editor file-selected="{{fileSelected}}"></antha-editor>
+    <antha-files file-selected="{{fileSelected}}"></antha-example-files>
+  </template>
+  <script>
+    HTMLImports.whenReady(() => {
+      Polymer({
+        is: 'antha-monaco',
+        properties: {
+          fileSelected: {
+            type: Object,
+            value: () => {
+              return {
+                name: '',
+                content: ''
+              };
+            },
+            notify: true,
+            observer: '_watchFile'
+          }
+        },
+        _watchFile: function(fileSelected) {
+
+        }
+      });
+    });
+  </script>
+</dom-module>

@@ -29,7 +29,8 @@ gulp.task('release', ['clean-release','compile'], function() {
 
 	return merge(
 			bundleOne('src/monaco.contribution'),
-			bundleOne('src/bat')
+			bundleOne('src/bat'),
+			bundleOne('src/antha')
 		)
 		.pipe(uglify())
 		.pipe(gulp.dest('./release/'));

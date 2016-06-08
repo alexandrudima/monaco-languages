@@ -10,6 +10,7 @@
     "node_modules/monaco-editor-core/monaco.d.ts"
   ],
   "files": [
+    "src/antha.ts",
     "src/bat.ts",
     "src/coffee.ts",
     "src/cpp.ts",

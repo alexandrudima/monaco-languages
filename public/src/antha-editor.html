@@ -1,0 +1,106 @@
+<script src="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/polymer/polymer.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-list/iron-list.html">
+
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/color.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/typography.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/shadow.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/default-theme.html">
+
+<dom-module id="antha-editor">
+  <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
+    :host {
+      @apply(--layout-vertical);
+      @apply(--layout-flex-3);
+      @apply(--section);
+    }
+
+    #monaco_editor {
+      @apply(--layout-flex);
+    }
+
+    .paper-font-title {
+      @apply(--paper-font-title);
+    }
+  </style>
+  <template>
+    <div class="paper-font-title">[[fileSelected.name]]</div>
+    <!--
+          TODO: Display three editors side-by-side.
+          One for the protocol, paramters and workflow.
+          -->
+    <div id="monaco_editor">
+    </div>
+  </template>
+  <!--
+      move this to somewhere closer to the actual loading of the editor,
+      i.e., in antha-editor possibly.
+      -->
+  <script src="/node_modules/monaco-editor-core/dev/vs/loader.js"></script>
+  <script>
+    HTMLImports.whenReady(() => {
+      Polymer({
+        is: 'antha-editor',
+        properties: {
+          fileSelected: {
+            type: Object,
+            notify: true,
+            observer: '_watchFile'
+          },
+          editor: {
+            type: Object,
+            notify: true
+          }
+        },
+        observers: [
+          '_updateEditor(fileSelected, editor)'
+        ],
+        ready: function() {
+          //var fileContent = (this.fileSelected && this.fileSelected.content ? this.fileSelected.content : null);
+          //this._loadMonaco(fileContent);
+          this._loadMonaco();
+        },
+        /**
+         * When both are ready - update its model to the content of the file.
+         * See: https://github.com/alexandrudima/monaco-editor-samples/blob/master/sample-diff-editor/index.html
+         */
+        _updateEditor: function(file, editor) {
+          if (file && editor) {
+            var content = file.content;
+            // Move elsewhere?
+            var model = monaco.editor.createModel(content, 'antha');
+            editor.setModel(model);
+          }
+        },
+        _isFileInvalid: function(file) {
+          return !file || !file.name || !file.content;
+        },
+        _watchFile: function(file, fileOld) {
+          if (this._isFileInvalid(file)) {
+            return;
+          }
+        },
+        _loadMonaco: function() {
+          // Need to close over the component, otherwise requirejs goes mad.
+          var anthaEditorComponent = this;
+
+          require.config({ paths: { 'vs': '/node_modules/monaco-editor-core/dev/vs', 'out': '/out'}});
+          require(['vs/editor/editor.main',], function() {
+            require(['out/src/monaco.contribution'], function() {
+              var editorDom = anthaEditorComponent.$.monaco_editor;
+              var editor = monaco.editor.create(editorDom, {
+                language: 'antha',
+                value: 'protocol\\n',
+                mimetypes: ['text/antha', 'text/an']
+              });
+
+              anthaEditorComponent.editor = editor;
+            });
+        });
+        }
+      });
+    });
+  </script>
+</dom-module>
