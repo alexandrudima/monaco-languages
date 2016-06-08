@@ -4,6 +4,11 @@
 <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-list/iron-list.html">
 
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/color.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/typography.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/shadow.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/default-theme.html">
+
 <dom-module id="antha-editor">
   <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
     :host {
@@ -15,9 +20,13 @@
     #monaco_editor {
       @apply(--layout-flex);
     }
+
+    .paper-font-title {
+      @apply(--paper-font-title);
+    }
   </style>
   <template>
-    <h5>[[fileSelected.name]]</h5>
+    <div class="paper-font-title">[[fileSelected.name]]</div>
     <!--
           TODO: Display three editors side-by-side.
           One for the protocol, paramters and workflow.

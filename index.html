@@ -21,12 +21,19 @@
   <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-flex-layout/iron-flex-layout-classes.html">
   <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-list/iron-list.html">
 
+  <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/color.html">
+  <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/typography.html">
+  <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/shadow.html">
+  <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/default-theme.html">
+
   <link rel="import" href="/public/src/antha-monaco.html">
 
   <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
     :root {
       --section: {
-        margin: 30px;
+        margin: 20px;
+        padding: 20px;
+        @apply(--shadow-elevation-2dp);
       }
     }
   </style>
