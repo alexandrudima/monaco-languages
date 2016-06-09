@@ -2,6 +2,8 @@
 
 This is a fork of https://github.com/alexandrudima/monaco-languages to support [Antha](https://www.antha-lang.org/).
 
+![image](demo/editor.png)
+
 ## Build
 
 ```sh
