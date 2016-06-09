@@ -13,7 +13,7 @@
   <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
     :host {
       @apply(--layout-vertical);
-      @apply(--layout-flex-3);
+      @apply(--layout-flex-2);
       @apply(--section);
     }
 
@@ -23,6 +23,7 @@
 
     .paper-font-title {
       @apply(--paper-font-title);
+      padding-bottom: 10px;
     }
   </style>
   <template>
@@ -34,13 +35,8 @@
     <div id="monaco_editor">
     </div>
   </template>
-  <!--
-      move this to somewhere closer to the actual loading of the editor,
-      i.e., in antha-editor possibly.
-      -->
   <script src="/node_modules/monaco-editor-core/dev/vs/loader.js"></script>
   <script>
-    HTMLImports.whenReady(() => {
       Polymer({
         is: 'antha-editor',
         properties: {
@@ -67,8 +63,9 @@
          * See: https://github.com/alexandrudima/monaco-editor-samples/blob/master/sample-diff-editor/index.html
          */
         _updateEditor: function(file, editor) {
-          if (file && editor) {
-            var content = file.content;
+          if (editor) {
+            // if no file has been selected - use a blank file
+            var content = file && file.content ? file.content : 'protocol\n';
             // Move elsewhere?
             var model = monaco.editor.createModel(content, 'antha');
             editor.setModel(model);
@@ -83,12 +80,38 @@
           }
         },
         _loadMonaco: function() {
-          // Need to close over the component, otherwise requirejs goes mad.
-          var anthaEditorComponent = this;
+          this._configureRequireJS();
+          this._loadMonacoModule();
+        },
+        _configureRequireJS: function() {
+          // Supported config options:
+          //
+          // baseUrl - The prefix that will be aplied to all modules when they are resolved to a location
+          // paths - Redirect rules for modules. The redirect rules will affect the module ids themselves
+          // bundles - Bundle mappings for modules.
+          // shim - Definitions for non-AMD scripts.
+          // config - Per-module configuration
+          // catchError - Catch errors when invoking the module factories
+          // recordStats - Record statistics
+          // urlArgs - The suffix that will be aplied to all modules when they are resolved to a location
+          // onError - Callback that will be called when errors are encountered
+          // ignoreDuplicateModules - The loader will issue warnings when duplicate modules are encountered. This list will inhibit those warnings if duplicate modules are expected.
+          // isBuild - Flag to indicate if current execution is as part of a build.
+          // nodeRequire - The main entry point node's require
+          // nodeInstrumenter - An optional transformation applied to the source before it is loaded in node's vm
 
-          require.config({ paths: { 'vs': '/node_modules/monaco-editor-core/dev/vs', 'out': '/out'}});
+          // https://github.com/Microsoft/vscode-loader
+          require.config({
+            paths: { 'vs': '/node_modules/monaco-editor-core/dev/vs'},
+            catchError: true
+            //ignoreDuplicateModules: true
+          });
+        },
+      _loadMonacoModule: function() {
+        // Need to close over the component, otherwise requirejs goes mad.
+          var anthaEditorComponent = this;
           require(['vs/editor/editor.main',], function() {
-            require(['out/src/monaco.contribution'], function() {
+            require(['/out/src/monaco.contribution'], function() {
               var editorDom = anthaEditorComponent.$.monaco_editor;
               var editor = monaco.editor.create(editorDom, {
                 language: 'antha',
@@ -99,8 +122,7 @@
               anthaEditorComponent.editor = editor;
             });
         });
-        }
-      });
-    });
+      }
+            });
   </script>
 </dom-module>

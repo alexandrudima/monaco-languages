@@ -12,57 +12,78 @@
 <dom-module id="antha-files">
   <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
     :host {
-      @apply(--layout-vertical);
-      @apply(--layout-flex);
       @apply(--section);
+    }
+    .file {
+
     }
   </style>
   <template>
-    <iron-list items="[[files]]" as="file">
+    <iron-list items="{{files}}" as="item" grid>
       <template>
         <div class="file">
-          <b>#[[index]] - [[file.name]]</b>
-          <p>[[_fileSummary(file.content)]]</p>
+          <b>[[item.name]]</b>
+          <p>[[_fileSummary(item.content)]]</p>
         </div>
       </template>
     </iron-list>
   </template>
   <script>
-    HTMLImports.whenReady(() => {
-      Polymer({
-        is: 'antha-files',
-        properties: {
-          files: {
-            type: Array,
-            value: () => {
-              return [];
-            }
-          },
-          fileSelected: {
-            type: Object,
-            notify: true
-          }
-        },
-        _fileSummary: function(content) {
-          if (content) {
-            return content.substr(0, 100);
-          }
-        },
-        ready: function() {
-          // Make into an Array then do Promise.all(...)
-          var filesToFetch = ['/public/examples/typeiisconstructassembly_sim.an'];
-          var fileToFetch = filesToFetch[0];
-            fetch(fileToFetch).then((res) => {
-              return res.text();
-            }).then((file) => {
-              // harcoding for now - use the index to determine name of the file
-              this.set('fileSelected.name', 'examples/typeiisconstructassembly_sim.an');
-              this.set('fileSelected.content', file);
+Polymer({
+  is: 'antha-files',
+  properties: {
+    files: {
+      type: Array,
+      value: () => {
+        return [];
+      },
+      notify: true
+    },
+    fileSelected: {
+      type: Object,
+      notify: true,
+      observer: '_watchFileSelected'
+    }
+  },
+  _fileSummary: function(content) {
+    if (content) {
+      return content.substr(0, 50);
+    }
+  },
+  _watchFileSelected: function(file) {
 
-              this.push('files', this.fileSelected);
-            });
-        }
+  },
+  _selectionHandler: function(file) {
+    // When file has been selectd
+    if (file) {
+
+    }
+  },
+  ready: function() {
+    // Make into an Array then do Promise.all(...)
+    var filesToFetch = ['/public/examples/typeiisconstructassembly_sim.an'];
+    var fileToFetch = filesToFetch[0];
+      fetch(fileToFetch).then((res) => {
+        return res.text();
+      }).then((file) => {
+        // harcoding for now - use the index to determine name of the file
+        this.set('fileSelected.name', 'examples/typeiisconstructassembly_sim.an');
+        this.set('fileSelected.content', file);
+
+        // Remove 2nd - just for testing
+        this.push('files', this.fileSelected, this.fileSelected);
+
+        //this.push('files', { name: '11', content: '22'}, { name: '33', content: '444'});
+        // Hack:
+        // Resizing
+
+        // iron-list lays out the items when it receives a notification via the iron-resize event. This event is fired by any element that implements IronResizableBehavior.
+
+        // By default, elements such as iron-pages, paper-tabs or paper-dialog will trigger this event automatically. If you hide the list manually (e.g. you use display: none) you might want to implement IronResizableBehavior or fire this event manually right after the list became visible again. For example:
+
+        document.querySelector('iron-list').fire('iron-resize');
       });
-    });
+  }
+});
   </script>
 </dom-module>

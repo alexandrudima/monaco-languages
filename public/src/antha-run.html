@@ -9,53 +9,22 @@
 <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/shadow.html">
 <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/default-theme.html">
 
-<link rel="import" href="/public/src/antha-editor.html">
-<link rel="import" href="/public/src/antha-files.html">
-<link rel="import" href="/public/src/antha-compile.html">
-<link rel="import" href="/public/src/antha-run.html">
-
-<dom-module id="antha-monaco">
+<dom-module id="antha-run">
   <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
     :host {
-      @apply(--layout-vertical);
-    }
-
-    antha-files,
-    antha-compile,
-    antha-run {
-      @apply(--layout-flex);
-    }
-
-    antha-editor {
-      @apply(--layout-flex-1);
+      @apply(--section);
     }
   </style>
   <template>
-    <antha-files file-selected="{{fileSelected}}"></antha-files>
-    <antha-editor file-selected="{{fileSelected}}"></antha-editor>
-    <antha-compile file-selected="{{fileSelected}}"></antha-compile>
-    <antha-run file-selected="{{fileSelected}}"></antha-run>
+    <div class="paper-font-title"><code>antharun</code></div>
   </template>
   <script>
-HTMLImports.whenReady(() => {
-  Polymer({
-    is: 'antha-monaco',
-    properties: {
-      fileSelected: {
-        type: Object,
-        value: () => {
-          return {
-            name: '',
-            content: ''
-          };
-        },
-        observer: '_watchFile'
-      }
-    },
-    _watchFile: function(fileSelected) {
-
-    }
-  });
+Polymer({
+  is: 'antha-run',
+  properties: {
+  },
+  ready: function() {
+  }
 });
   </script>
 </dom-module>
