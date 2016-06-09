@@ -8,22 +8,47 @@
 <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/typography.html">
 <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/shadow.html">
 <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-styles/default-theme.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-item/paper-item.html">
+
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-icon/iron-icon.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-icons/iron-icons.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-icons/communication-icons.html">
+<!--<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/iron-demo-helpers/demo-pages-shared-styles.html">-->
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-item/paper-icon-item.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-item/paper-item.html">
+<link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.4.0.2/lib/paper-item/paper-item-body.html">
+
 
 <dom-module id="antha-files">
   <style is="custom-style" include="iron-flex iron-flex-reverse iron-flex-alignment iron-flex-factors iron-positioning">
     :host {
       @apply(--section);
     }
-    .file {
 
+    .file {}
+
+    paper-item {
+      --paper-item-focused: {
+        background: var(--paper-amber-500);
+        font-weight: bold;
+      }
+      --paper-item-focused-before: {
+        opacity: 0;
+      }
     }
   </style>
   <template>
-    <iron-list items="{{files}}" as="item" grid>
+    <iron-list items="{{files}}" as="item" selection-enabled selected-item="{{fileSelected}}" grid>
       <template>
-        <div class="file">
-          <b>[[item.name]]</b>
-          <p>[[_fileSummary(item.content)]]</p>
+        <div role="listbox">
+          <paper-item class="file">
+            <paper-item-body two-line>
+              <div>[[item.name]]</div>
+              <div secondary>[[_fileSummary(item.content)]]</div>
+            </paper-item-body>
+          </paper-item>
         </div>
       </template>
     </iron-list>
@@ -44,6 +69,9 @@ Polymer({
       notify: true,
       observer: '_watchFileSelected'
     }
+  },
+  _fileClass(file) {
+
   },
   _fileSummary: function(content) {
     if (content) {
@@ -71,7 +99,7 @@ Polymer({
         this.set('fileSelected.content', file);
 
         // Remove 2nd - just for testing
-        this.push('files', this.fileSelected, this.fileSelected);
+        this.push('files', this.fileSelected, { name: 'empty', content: 'protocol\n' });
 
         //this.push('files', { name: '11', content: '22'}, { name: '33', content: '444'});
         // Hack:
