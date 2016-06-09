@@ -29,7 +29,6 @@
     "src/ruby.ts",
     "src/sql.ts",
     "src/swift.ts",
-    "src/types.ts",
     "src/vb.ts",
     "src/xml.ts",
     "test/assert.d.ts",
@@ -52,8 +51,7 @@
     "test/sql.test.ts",
     "test/swift.test.ts",
     "test/testRunner.ts",
-    "test/testUtil.ts",
-    "test/vb.tests.ts",
+    "test/vb.test.ts",
     "test/xml.test.ts",
     "node_modules/monaco-editor-core/monaco.d.ts"
   ]
